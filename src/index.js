@@ -5,15 +5,18 @@ const subtract = document.getElementById('subtract');
 const number = document.querySelector('span');
 
 number.innerText = 0;
+const ADD = 'ADD';
+const SUBTRACT = 'SUBTRACT';
 
 //reducer is a function that modifies the data
 const countModifier = (count = 0, action) => {
-	if (action.type === 'ADD') {
-		return count = count + 1;
-	} else if (action.type === 'SUBTRACT') {
-		return count = count - 1;
-	} else {
-		return count;
+	switch (action.type) {
+		case ADD :
+			return count + 1;
+		case SUBTRACT :
+			return count - 1;
+		default :
+			return count;
 	}
 };
 
@@ -27,11 +30,11 @@ const onChange = () => {
 countStore.subscribe(onChange);
 
 const handleAdd = () => {
-	countStore.dispatch({ type: 'ADD' });
+	countStore.dispatch({ type: ADD });
 };
 
 const handleSubtract = () => {
-	countStore.dispatch({ type: 'SUBTRACT' });
+	countStore.dispatch({ type: SUBTRACT });
 };
 
 add.addEventListener('click', handleAdd);
