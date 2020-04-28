@@ -1,41 +1,18 @@
-import { createStore } from 'redux';
+const form = document.querySelector('form');
+const input = document.querySelector('input');
+const ul = document.querySelector('ul');
 
-const add = document.getElementById('add');
-const subtract = document.getElementById('subtract');
-const number = document.querySelector('span');
+const addToList = (todo) => {
+	const li = document.createElement('li');
+	li.innerText = todo;
+	ul.appendChild(li);
+}
 
-number.innerText = 0;
-const ADD = 'ADD';
-const SUBTRACT = 'SUBTRACT';
+const onSubmit = e => {
+	e.preventDefault();
+	const todo = input.value;
+	input.value = '';
+	addToList(todo);
+}
 
-//reducer is a function that modifies the data
-const countModifier = (count = 0, action) => {
-	switch (action.type) {
-		case ADD :
-			return count + 1;
-		case SUBTRACT :
-			return count - 1;
-		default :
-			return count;
-	}
-};
-
-//store stores the data
-const countStore = createStore(countModifier);
-
-const onChange = () => {
-	number.innerText = countStore.getState();
-};
-
-countStore.subscribe(onChange);
-
-const handleAdd = () => {
-	countStore.dispatch({ type: ADD });
-};
-
-const handleSubtract = () => {
-	countStore.dispatch({ type: SUBTRACT });
-};
-
-add.addEventListener('click', handleAdd);
-subtract.addEventListener('click', handleSubtract);
+form.addEventListener('submit', onSubmit);
