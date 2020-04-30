@@ -1,20 +1,16 @@
-import { createAction, createReducer, configureStore } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const addToDo = createAction('ADD');
-const deleteToDo = createAction('DELETE');
+const toDos = createSlice({
+    name: 'toDos',
+    initialState: [],
+    reducers: {
+        add: (state, action) => {
+            state.push({text: action.payload, id: Date.now()})
+        },
+        remove: (state, action) => state.filter(toDo => toDo.id !== action.payload)
+    }
+});
 
-//either mutate the state argument or return a new state, but not both.
-const reducer = createReducer([], {
-    [addToDo] : (state, action) => {
-        state.push({text: action.payload, id : Date.now()});
-    },
-    [deleteToDo] : (state, action) => (
-        state.filter(toDo => toDo.id !== action.payload)
-    )
-})
+export const { add, remove } = toDos.actions;
 
-const store = configureStore({ reducer });
-
-export const actionCreator = { addToDo, deleteToDo };
-
-export default store;
+export default configureStore({ reducer: toDos.reducer });
